@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import getFailedSnapshotTests from 'jest-util/build/getFailedSnapshotTests';
 
 const App = () => {
   const INITIAL_GAME_STATE = { victory: false, startTime: null, endTime: null };
@@ -13,6 +12,10 @@ const App = () => {
   const [userText, setUserText] = useState('');
   const [snippet, setSnippet] = useState('');
   const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
+
+  useEffect(() => {
+    document.title = gameState.victory && "Victory!";
+  })
 
   const updateUserText = e => {
     setUserText(e.target.value);
@@ -28,7 +31,8 @@ const App = () => {
 
   const chooseSnippet = snippetIndex => () => {
     setSnippet(SNIPPETS[snippetIndex]);
-    setGameState({ ...gameState, startTime: new Date().getTime() });
+    setUserText('');
+    setGameState({ ...gameState, victory: false, startTime: new Date().getTime() });
   };
 
   return (
